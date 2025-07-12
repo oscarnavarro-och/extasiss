@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>extasis connection</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #ffd700;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><circle cx="500" cy="500" r="400" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="2"/><circle cx="500" cy="500" r="300" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/><circle cx="500" cy="500" r="200" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></svg>') center/cover;
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.3s forwards;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 15px 40px;
+            background: linear-gradient(45deg, #ffd700, #ffed4e);
+            color: #333;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.6s forwards;
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(255, 215, 0, 0.4);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Sections */
+        section {
+            padding: 80px 0;
+            position: relative;
+        }
+
+        .section-alt {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: white;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(45deg, #ffd700, #ffed4e);
+        }
+
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .expert-quote {
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 4px solid #ffd700;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 10px;
+            font-style: italic;
+        }
+
+        .expert-quote-text {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.95rem;
+            line-height: 1.4;
+            margin-bottom: 0.5rem;
+        }
+
+        .expert-quote-author {
+            color: #ffd700;
+            font-size: 0.85rem;
+            font-weight: bold;
+            text-align: right;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .feature-card h3 {
+            color: white;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .feature-card p {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Progress Section */
+        .progress-section {
+            text-align: center;
+            color: white;
+        }
+
+        .progress-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: scale(1.05);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #ffd700;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Interactive Elements */
+        .interactive-quote {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 3rem;
+            border-radius: 20px;
+            text-align: center;
+            margin: 3rem 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .interactive-quote:hover {
+            transform: scale(1.02);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .quote-text {
+            font-size: 1.5rem;
+            font-style: italic;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .quote-author {
+            color: #ffd700;
+            font-weight: bold;
+        }
+
+        /* Video Section */
+        .video-section {
+            padding: 80px 0;
+        }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .video-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .video-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .video-placeholder {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .video-placeholder::before {
+            content: '🎬';
+            font-size: 3rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .video-title {
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .video-description {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+        }
+
+        .upload-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .upload-area {
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 1rem 0;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .upload-area:hover {
+            border-color: #ffd700;
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        .upload-area.dragover {
+            border-color: #ffd700;
+            background: rgba(255, 215, 0, 0.2);
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 1rem;
+        }
+
+        .upload-text {
+            color: white;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        .upload-button {
+            background: linear-gradient(45deg, #ffd700, #ffed4e);
+            color: #333;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .upload-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        /* WhatsApp Button */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #25d366;
+            color: white;
+            border-radius: 50px;
+            padding: 15px 20px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-decoration: none;
+            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.3);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .whatsapp-float:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(37, 211, 102, 0.4);
+            background: #128c7e;
+        }
+
+        .whatsapp-float::before {
+            content: '📱';
+            font-size: 1.5rem;
+        }
+
+        .whatsapp-contact {
+            background: rgba(37, 211, 102, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            margin: 2rem 0;
+            border: 1px solid rgba(37, 211, 102, 0.3);
+        }
+
+        .whatsapp-contact h3 {
+            color: #25d366;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .whatsapp-contact p {
+            color: white;
+            margin-bottom: 1.5rem;
+        }
+
+        .whatsapp-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #25d366;
+            color: white;
+            text-decoration: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .whatsapp-button:hover {
+            background: #128c7e;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(37, 211, 102, 0.3);
+        }
+        .contact-form {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 3rem;
+            border-radius: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: white;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.02);
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(45deg, #ffd700, #ffed4e);
+            color: #333;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.3);
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Floating Elements */
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .progress-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-elements">
+        <div class="floating-circle" style="width: 80px; height: 80px; top: 10%; left: 10%; animation-delay: 0s;"></div>
+        <div class="floating-circle" style="width: 60px; height: 60px; top: 20%; right: 10%; animation-delay: 2s;"></div>
+        <div class="floating-circle" style="width: 100px; height: 100px; bottom: 10%; left: 20%; animation-delay: 4s;"></div>
+        <div class="floating-circle" style="width: 70px; height: 70px; bottom: 20%; right: 20%; animation-delay: 3s;"></div>
+    </div>
+
+    <header>
+        <nav>
+            <a href="#" class="logo">✨ extasiss connection</a>
+            <ul class="nav-links">
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#servicios">Servicios</a></li>
+                <li><a href="#videos">Videos</a></li>
+                <li><a href="#sobre-mi">Sobre Mí</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="inicio" class="hero">
+        <div class="hero-content">
+            <h1>Descubre Tu Potencial Infinito</h1>
+            <p>Transforma tu vida con herramientas probadas de desarrollo personal y ayuda profesional</p>
+            <a href="#servicios" class="cta-button">Comienza Tu Transformación</a>
+        </div>
+    </section>
+
+    <section id="servicios" class="section-alt">
+        <div class="container">
+            <h2 class="section-title">Nuestros Servicios</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <span class="feature-icon">🎯</span>
+                    <h3>Coaching Personal</h3>
+                    <p>Sesiones individuales personalizadas para alcanzar tus objetivos específicos y superar obstáculos personales.</p>
+                    <div class="expert-quote">
+                        <div class="expert-quote-text">"El coaching es liberar el potencial de una persona para maximizar su rendimiento."</div>
+                        <div class="expert-quote-author">- John Whitmore, pionero del coaching</div>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">🧸</span>
+                    <h3>Sanación de la Infancia</h3>
+                    <p>Libérate de traumas infantiles y patrones limitantes. Sana tu niño interior para vivir desde el amor propio.</p>
+                    <div class="expert-quote">
+                        <div class="expert-quote-text">"Si queremos cambiar una situación, primero tenemos que cambiar nosotros, y para cambiar nosotros tenemos que saber qué cambiar."</div>
+                        <div class="expert-quote-author">- Alice Miller, psicoanalista experta en trauma infantil</div>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">💝</span>
+                    <h3>Relaciones Sentimentales</h3>
+                    <p>Transforma tus relaciones amorosas. Aprende a amar sanamente y crear vínculos auténticos y duraderos.</p>
+                    <div class="expert-quote">
+                        <div class="expert-quote-text">"La capacidad de estar solo es la capacidad de amar. Puede parecer paradójico, pero no lo es."</div>
+                        <div class="expert-quote-author">- Erich Fromm, psicólogo del amor</div>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">🙏</span>
+                    <h3>Desarrollo Espiritual</h3>
+                    <p>Conecta con tu esencia divina. Encuentra propósito, paz interior y alineación con el universo.</p>
+                    <div class="expert-quote">
+                        <div class="expert-quote-text">"La espiritualidad no es adoptar más creencias, sino descubrir la verdad de quien eres."</div>
+                        <div class="expert-quote-author">- Eckhart Tolle, maestro espiritual</div>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">🧠</span>
+                    <h3>Mindfulness & Meditación</h3>
+                    <p>Técnicas de atención plena para reducir el estrés, mejorar la concentración y encontrar paz interior.</p>
+                    <div class="expert-quote">
+                        <div class="expert-quote-text">"La meditación no es una forma de hacer que tu mente se calme. Es una forma de entrar en la calma que ya está ahí."</div>
+                        <div class="expert-quote-author">- Deepak Chopra, maestro de meditación</div>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">🚀</span>
+                    <h3>Desarrollo de Hábitos</h3>
+                    <p>Construcción de rutinas positivas que te llevarán al éxito a largo plazo de manera sostenible.</p>
+                    <div class="expert-quote">
+                        <div class="expert-quote-text">"Somos lo que hacemos repetidamente. La excelencia, entonces, no es un acto, sino un hábito."</div>
+                        <div class="expert-quote-author">- James Clear, autor de "Hábitos Atómicos"</div>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">💪</span>
+                    <h3>Confianza & Autoestima</h3>
+                    <p>Fortalece tu autoconfianza y desarrolla una mentalidad resiliente para enfrentar cualquier desafío.</p>
+                    <div class="expert-quote">
+                        <div class="expert-quote-text">"La confianza no es 'ellos van a gustar de mí'. La confianza es 'estaré bien si no les gusto'."</div>
+                        <div class="expert-quote-author">- Brené Brown, investigadora de vulnerabilidad</div>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">🎨</span>
+                    <h3>Creatividad & Innovación</h3>
+                    <p>Desbloquea tu potencial creativo y encuentra soluciones innovadoras a los problemas cotidianos.</p>
+                    <div class="expert-quote">
+                        <div class="expert-quote-text">"La creatividad es la inteligencia divirtiéndose. No tengas miedo de ser creativo."</div>
+                        <div class="expert-quote-author">- Sir Ken Robinson, experto en creatividad</div>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">🌟</span>
+                    <h3>Propósito de Vida</h3>
+                    <p>Descubre tu misión personal y alinea todas tus acciones con tus valores más profundos.</p>
+                    <div class="expert-quote">
+                        <div class="expert-quote-text">"El propósito de la vida no es ser feliz. Es ser útil, honorable, compasivo, hacer que importe el haber vivido."</div>
+                        <div class="expert-quote-author">- Viktor Frankl, psiquiatra y superviviente del Holocausto</div>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">🌟</span>
+                    <h3>Nuestras propias frases.</h3>
+                    <p>Está bien reconocer aquellas frases que han impactado al mundo por años, de aquellos expertos que han cambiado la manera de ver  la historia en cada individuo, pero es hora de crear y de avanzar no selo reiterar.</p>
+                    <div class="expert-quote">
+                        <div class="expert-quote-text">"las historias no llegan solas, los sueños no existen si no hay algo por cambiar, crea tu propía historia,mejora la realidad en la que vives y has vivir a la realidad en una mejor historia."</div>
+                        <div class="expert-quote-author">- Oscar Navarro, filosofo estudiantil nacido en Colombia</div>
+                    </div>
+                </div>,
+            </div>
+        </div>
+    </section>
+
+    <section class="progress-section">
+        <div class="container">
+            <h2 class="section-title">Resultados Comprobados</h2>
+            <div class="progress-stats">
+                <div class="stat-card">
+                    <div class="stat-number">500+</div>
+                    <div class="stat-label">Vidas Transformadas</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">95%</div>
+                    <div class="stat-label">Satisfacción</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">10+</div>
+                    <div class="stat-label">Años de Experiencia</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-label">Apoyo Continuo</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-alt">
+        <div class="container">
+            <h2 class="section-title">Inspiración Diaria</h2>
+            <div class="interactive-quote" onclick="changeQuote()">
+                <div class="quote-text" id="quoteText">
+                    "El éxito no es la clave de la felicidad. La felicidad es la clave del éxito."
+                </div>
+                <div class="quote-author" id="quoteAuthor">- Albert Schweitzer</div>
+            </div>
+            <p style="text-align: center; color: rgba(255,255,255,0.8); margin-top: 1rem;">
+                💡 Haz clic en la cita para ver más inspiración
+            </p>
+        </div>
+    </section>
+
+    <section id="videos" class="video-section">
+        <div class="container">
+            <h2 class="section-title">Videos Transformadores</h2>
+            
+            <div class="upload-section">
+                <h3 style="color: white; margin-bottom: 1rem;">Subir Nuevo Video</h3>
+                <div class="upload-area" onclick="document.getElementById('videoInput').click()">
+                    <div class="upload-icon">🎥</div>
+                    <div class="upload-text">Arrastra tu video aquí o haz clic para seleccionar</div>
+                    <button class="upload-button" type="button">Seleccionar Video</button>
+                </div>
+                <input type="file" id="videoInput" accept="video/*" style="display: none;" onchange="handleVideoUpload(event)">
+                <div id="uploadStatus" style="color: white; margin-top: 1rem; display: none;"></div>
+            </div>
+
+            <div class="video-grid" id="videoGrid">
+                <div class="video-card">
+                    <div class="video-placeholder">
+                        <div style="text-align: center; color: white;">
+                            <div style="font-size: 2rem; margin-bottom: 0.5rem;">🧸</div>
+                            <div style="font-size: 0.9rem;">Sanando Tu Niño Interior</div>
+                        </div>
+                    </div>
+                    <div class="video-title">Liberándote de Traumas Infantiles</div>
+                    <div class="video-description">Descubre cómo sanar las heridas de la infancia y reconectar con tu esencia auténtica.</div>
+                </div>
+
+                <div class="video-card">
+                    <div class="video-placeholder">
+                        <div style="text-align: center; color: white;">
+                            <div style="font-size: 2rem; margin-bottom: 0.5rem;">💝</div>
+                            <div style="font-size: 0.9rem;">Amor Consciente</div>
+                        </div>
+                    </div>
+                    <div class="video-title">Transformando tus Relaciones</div>
+                    <div class="video-description">Aprende a crear relaciones amorosas sanas basadas en el respeto y la comunicación auténtica.</div>
+                </div>
+
+                <div class="video-card">
+                    <div class="video-placeholder">
+                        <div style="text-align: center; color: white;">
+                            <div style="font-size: 2rem; margin-bottom: 0.5rem;">🙏</div>
+                            <div style="font-size: 0.9rem;">Conexión Espiritual</div>
+                        </div>
+                    </div>
+                    <div class="video-title">Despertar Espiritual</div>
+                    <div class="video-description">Encuentra tu propósito divino y conecta con la sabiduría universal que vive en ti.</div>
+                </div>
+
+                <div class="video-card">
+                    <div class="video-placeholder">
+                        <div style="text-align: center; color: white;">
+                            <div style="font-size: 2rem; margin-bottom: 0.5rem;">🌟</div>
+                            <div style="font-size: 0.9rem;">Autoestima Elevada</div>
+                        </div>
+                    </div>
+                    <div class="video-title">Construyendo Confianza Interior</div>
+                    <div class="video-description">Desarrolla una autoestima sólida y una confianza inquebrantable en ti mismo.</div>
+                </div>
+
+                <div class="video-card">
+                    <div class="video-placeholder">
+                        <div style="text-align: center; color: white;">
+                            <div style="font-size: 2rem; margin-bottom: 0.5rem;">🧠</div>
+                            <div style="font-size: 0.9rem;">Mente en Paz</div>
+                        </div>
+                    </div>
+                    <div class="video-title">Meditación y Mindfulness</div>
+                    <div class="video-description">Técnicas poderosas para calmar la mente y encontrar paz interior en medio del caos.</div>
+                </div>
+
+                <div class="video-card">
+                    <div class="video-placeholder">
+                        <div style="text-align: center; color: white;">
+                            <div style="font-size: 2rem; margin-bottom: 0.5rem;">🚀</div>
+                            <div style="font-size: 0.9rem;">Transformación Total</div>
+                        </div>
+                    </div>
+                    <div class="video-title">Tu Mejor Versión</div>
+                    <div class="video-description">El camino completo hacia tu transformación personal y el logro de tus sueños más profundos.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="sobre-mi">
+        <div class="container">
+            <h2 class="section-title">Sobre Mí</h2>
+            <div style="text-align: center; color: white; max-width: 800px; margin: 0 auto;">
+                <p style="font-size: 1.2rem; margin-bottom: 2rem;">
+                    Soy la persona que estabas buscando con varios años de experiencia ayudando a personas como tú a sanar heridas profundas, transformar patrones limitantes y conectar con su verdadero ser. Mi enfoque integra la sanación emocional, el desarrollo espiritual y las relaciones conscientes.
+                </p>
+                <p style="font-size: 1.1rem; color: rgba(255,255,255,0.8); margin-bottom: 2rem;">
+                    Mi misión es acompañarte en tu proceso de sanación del niño interior, liberación de traumas infantiles, construcción de relaciones amorosas auténticas, crear una mejor vida, un mejor futro y un mejor pasado. Creo que todos merecemos vivir desde el amor propio y la conexión espiritual, dopamina al corazón.
+                </p>
+                
+                <div class="whatsapp-contact">
+                    <h3>💬 Conversemos Directamente</h3>
+                    <p>¿Tienes preguntas? ¿Necesitas orientación inmediata? Estoy aquí para ti.</p>
+                    <a href="https://wa.me/522203799782?text=Hola%2C%20me%20interesa%20conocer%20más%20sobre%20tus%20servicios%20de%20desarrollo%20personal" class="whatsapp-button" target="_blank">
+                        <span>📱</span>
+                        Escribir por WhatsApp
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contacto" class="section-alt">
+        <div class="container">
+            <h2 class="section-title">¿Listo para Transformar tu Vida?</h2>
+            <form class="contact-form" onsubmit="submitForm(event)">
+                <div class="form-group">
+                    <label for="name">Nombre Completo</label>
+                    <input type="text" id="name" name="name" placeholder="Tu nombre completo" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="tu@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Teléfono</label>
+                    <input type="tel" id="phone" name="phone" placeholder="Tu número de teléfono">
+                </div>
+                <div class="form-group">
+                    <label for="message">¿Cuál es tu principal desafío?</label>
+                    <textarea id="message" name="message" rows="5" placeholder="Cuéntame sobre tu situación actual... ¿Necesitas sanar heridas del pasado? ¿Mejorar tus relaciones? ¿Conectar espiritualmente? Estoy aquí para ayudarte." required></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Solicitar Consulta</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 extasiss connection. Todos los derechos reservados.</p>
+            <p style="margin-top: 1rem; color: rgba(255,255,255,0.7);">
+                💫 Tu transformación comienza hoy 
+            </p>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Float Button -->
+    <a href="https://wa.me/522203799782?text=Hola%2C%20me%20interesa%20conocer%20más%20sobre%20tus%20servicios%20de%20desarrollo%20personal" class="whatsapp-float" target="_blank">
+        WhatsApp
+    </a>
+
+    <script>
+        // Quotes rotation
+        const quotes = [
+            {
+                text: "Sanar al niño interior es el regalo más grande que puedes darte a ti mismo.",
+                author: "Louise Hay"
+            },
+            {
+                text: "El amor propio es la base de todas las relaciones sanas.",
+                author: "Buddha"
+            },
+            {
+                text: "Tu alma conoce el camino hacia tu sanación.",
+                author: "Rumi"
+            },
+            {
+                text: "Cuando cambias la forma de ver las cosas, las cosas que ves cambian.",
+                author: "Wayne Dyer"
+            },
+            {
+                text: "La espiritualidad no es una religión, es una forma de vida.",
+                author: "Deepak Chopra"
+            },
+            {
+                text: "El perdón es la llave que abre la puerta de la resentimiento y las esposas del odio.",
+                author: "Corrie ten Boom"
+            },
+            {
+                text: "Tu tarea no es buscar amor, sino buscar y encontrar todas las barreras que has construido contra él.",
+                author: "Rumi"
+            }
+        ];
+
+        let currentQuoteIndex = 0;
+
+        function changeQuote() {
+            currentQuoteIndex = (currentQuoteIndex + 1) % quotes.length;
+            const quoteText = document.getElementById('quoteText');
+            const quoteAuthor = document.getElementById('quoteAuthor');
+            
+            quoteText.style.opacity = '0';
+            quoteAuthor.style.opacity = '0';
+            
+            setTimeout(() => {
+                quoteText.textContent = quotes[currentQuoteIndex].text;
+                quoteAuthor.textContent = '- ' + quotes[currentQuoteIndex].author;
+                quoteText.style.opacity = '1';
+                quoteAuthor.style.opacity = '1';
+            }, 300);
+        }
+
+        // Form submission
+        function submitForm(event) {
+            event.preventDefault();
+            const submitBtn = document.querySelector('.submit-btn');
+            const originalText = submitBtn.textContent;
+            
+            submitBtn.textContent = 'Enviando...';
+            submitBtn.disabled = true;
+            
+            // Simulate form submission
+            setTimeout(() => {
+                submitBtn.textContent = '¡Mensaje Enviado! 🎉';
+                submitBtn.style.background = 'linear-gradient(45deg, #4CAF50, #45a049)';
+                
+                setTimeout(() => {
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
+                    submitBtn.style.background = 'linear-gradient(45deg, #ffd700, #ffed4e)';
+                    document.querySelector('.contact-form').reset();
+                }, 3000);
+            }, 2000);
+        }
+
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Header background on scroll
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(0, 0, 0, 0.8)';
+            } else {
+                header.style.background = 'rgba(255, 255, 255, 0.1)';
+            }
+        });
+
+        // Animate elements on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe feature cards and stat cards
+        document.querySelectorAll('.feature-card, .stat-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(card);
+        });
+
+        // Auto-rotate quotes every 8 seconds
+        setInterval(changeQuote, 8000);
+
+        // Video upload functionality
+        function handleVideoUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const statusDiv = document.getElementById('uploadStatus');
+                statusDiv.style.display = 'block';
+                statusDiv.innerHTML = '<span style="color: #ffd700;">📤 Subiendo video...</span>';
+                
+                // Simulate upload process
+                setTimeout(() => {
+                    statusDiv.innerHTML = '<span style="color: #4CAF50;">✅ Video subido exitosamente!</span>';
+                    addVideoToGrid(file);
+                    
+                    setTimeout(() => {
+                        statusDiv.style.display = 'none';
+                        event.target.value = '';
+                    }, 3000);
+                }, 2000);
+            }
+        }
+
+        function addVideoToGrid(file) {
+            const videoGrid = document.getElementById('videoGrid');
+            const newVideoCard = document.createElement('div');
+            newVideoCard.className = 'video-card';
+            
+            const videoURL = URL.createObjectURL(file);
+            
+            newVideoCard.innerHTML = `
+                <video controls style="width: 100%; height: 200px; border-radius: 15px; object-fit: cover;">
+                    <source src="${videoURL}" type="${file.type}">
+                    Tu navegador no soporta la reproducción de video.
+                </video>
+                <div class="video-title">${file.name}</div>
+                <div class="video-description">Video subido recientemente - ${new Date().toLocaleDateString()}</div>
+            `;
+            
+            videoGrid.appendChild(newVideoCard);
+            
+            // Add animation
+            newVideoCard.style.opacity = '0';
+            newVideoCard.style.transform = 'translateY(30px)';
+            newVideoCard.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            
+            setTimeout(() => {
+                newVideoCard.style.opacity = '1';
+                newVideoCard.style.transform = 'translateY(0)';
+            }, 100);
+        }
+
+        // Drag and drop functionality
+        const uploadArea = document.querySelector('.upload-area');
+        
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+        
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+        
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0 && files[0].type.startsWith('video/')) {
+                document.getElementById('videoInput').files = files;
+                handleVideoUpload({ target: { files: files } });
+            }
+        });
+    </script>
+</body>
+</html>
